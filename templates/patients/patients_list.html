@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h3>Patients</h3>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newPatientModal">
+        + New Patient
+    </button>
+</div>
+
+<table id="patientsTable" class="table table-sm">
+    <thead>
+        <tr>
+            <th class="text-center">MR #</th>
+            <th class="text-center w-25">Name</th>
+            <th class="text-center">DOB</th>
+            <th class="text-center">Age</th>
+            <th class="text-center">Gender</th>
+            <th class="text-center">Phone</th>
+            <th class="text-center">Email</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for patient in patients %}
+        <tr>
+            <td class="text-center align-middle">{{ patient.mr_number }}</td>
+            <td class="align-middle">{{ patient.first_name }} {{ patient.last_name }}</td>
+            <td class="text-center align-middle">{{ patient.dob }}</td>
+            <td class="text-center align-middle">{{ patient.age }}</td>
+            <td class="text-center align-middle">{{ patient.get_gender_display }}</td>
+            <td class="text-center align-middle">{{ patient.phone }}</td>
+            <td class="align-middle">{{ patient.email }}</td>
+            <td class="text-end w-auto align-middle">
+                {% comment %} <a class="btn btn-info btn-sm" href="{% url 'patients_edit' patient.id %}">Edit</a>
+                <a class="btn btn-danger btn-sm" href="{% url 'patients_delete' patient.id %}">Delete</a> {% endcomment %}
+                <a class="btn btn-sm btn-outline-info" href="">PRESCRIPTION</a>
+                <a class="btn btn-sm btn-outline-success" href="">HEALTH RECORD</a>
+                <a class="" href=""><i class="bi bi-arrow-right"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#patientsTable').DataTable();
+});
+</script>
+
+<!-- New Patient Modal -->
+<div class="modal fade" id="newPatientModal" tabindex="-1" aria-labelledby="newPatientModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="{% url 'patients_create' %}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="newPatientModalLabel">Add New Patient</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2">
+            <label>First Name</label>
+            <input type="text" name="first_name" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label>Last Name</label>
+            <input type="text" name="last_name" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label>DOB</label>
+            <input type="date" name="dob" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label>Age</label>
+            <input type="number" name="age" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label>Gender</label>
+            <select name="gender" class="form-control" required>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label>Phone</label>
+            <input type="text" name="phone" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control">
+          </div>
+          <div class="mb-2">
+            <label>Address</label>
+            <textarea name="address" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save Patient</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
