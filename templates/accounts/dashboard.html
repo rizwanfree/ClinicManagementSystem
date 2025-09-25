@@ -80,7 +80,7 @@
                         <td class="text-center align-middle">{{ a.status }}</td>
                         <td class="text-end align-middle">
                             <a class="btn btn-primary btn-sm" href="">Add Invoice</a>
-                            <a class="btn btn-info btn-sm" href="">Details -></a>
+                            <a class="btn btn-info btn-sm" href="{% url "patient_detail" a.patient.id %}">Details -></a>
                         </td>
                     </tr>
                     {% endfor %}

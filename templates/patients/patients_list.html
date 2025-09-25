@@ -36,7 +36,7 @@
                 <a class="btn btn-danger btn-sm" href="{% url 'patients_delete' patient.id %}">Delete</a> {% endcomment %}
                 <a class="btn btn-sm btn-outline-info" href="">PRESCRIPTION</a>
                 <a class="btn btn-sm btn-outline-success" href="">HEALTH RECORD</a>
-                <a class="" href=""><i class="bi bi-arrow-right"></i></a>
+                <a class="" href="{% url "patient_detail" patient.id %}"><i class="bi bi-arrow-right"></i></a>
             </td>
         </tr>
         {% endfor %}
