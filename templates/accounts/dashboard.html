@@ -3,39 +3,59 @@
 
 {% block content %}
 <div class="row">
+    <!-- Patients -->
     <div class="col-md-3">
-        <div class="card mb-3 shadow">
-            <div class="card-body">
-                <h5 class="card-title text-center">Total Patients</h5>
-                <p class="card-text display-7 text-center">{{ patients_count }}</p>
+        <div class="card mb-3 shadow bg-primary text-white">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="card-title">Total Patients</h5>
+                    <p class="card-text display-6 fw-bold mb-0">{{ patients_count }}</p>
+                </div>
+                <i class="bi bi-people display-4 opacity-50"></i>
             </div>
         </div>
     </div>
+
+    <!-- Appointments Today -->
     <div class="col-md-3">
-        <div class="card mb-3 shadow">
-            <div class="card-body">
-                <h5 class="card-title text-center">Appointments For Today</h5>
-                <p class="card-text display-7 text-center">{{ appointments_count_today }}</p>
+        <div class="card mb-3 shadow bg-success text-white">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="card-title">Appointments Today</h5>
+                    <p class="card-text display-6 fw-bold mb-0">{{ appointments_count_today }}</p>
+                </div>
+                <i class="bi bi-calendar-check display-4 opacity-50"></i>
             </div>
         </div>
     </div>
+
+    <!-- Total Appointments -->
     <div class="col-md-3">
-        <div class="card mb-3 shadow">
-            <div class="card-body">
-                <h5 class="card-title text-center">Total Appointments</h5>
-                <p class="card-text display-7 text-center">{{ appointments_count_total }}</p>
+        <div class="card mb-3 shadow bg-warning text-dark">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="card-title">Total Appointments</h5>
+                    <p class="card-text display-6 fw-bold mb-0">{{ appointments_count_total }}</p>
+                </div>
+                <i class="bi bi-bar-chart-line display-4 opacity-50 text-dark"></i>
             </div>
         </div>
     </div>
+
+    <!-- Extra Info -->
     <div class="col-md-3">
-        <div class="card mb-3 shadow">
-            <div class="card-body">
-                <h5 class="card-title text-center">Extra Info</h5>
-                <p class="card-text display-7 text-center">0</p>
+        <div class="card mb-3 shadow bg-info text-white">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="card-title">Extra Info</h5>
+                    <p class="card-text display-6 fw-bold mb-0">0</p>
+                </div>
+                <i class="bi bi-info-circle display-4 opacity-50"></i>
             </div>
         </div>
     </div>
 </div>
+
 
  {% comment %} Datatables {% endcomment %}
 <div class="col-md-12">
@@ -72,19 +92,44 @@
                 <tbody>
                     {% for a in appointments %}
                     <tr>
-                        <td class="text-center align-middle">{{ a.token_number }} </td>
+                        <td class="text-center align-middle">{{ a.token_number }}</td>
                         <td class="text-center align-middle">{{ a.patient.mr_number }}</td>
                         <td class="text-center align-middle">{{ a.patient.first_name }} {{ a.patient.last_name }}</td>
-                        <td class="text-center align-middle">{{ a.doctor.first_name }} {{ a.doctor.last_name }}</td>                        
-                        <td class="text-center align-middle">Cash</td>
+                        <td class="text-center align-middle">{{ a.doctor.first_name }} {{ a.doctor.last_name }}</td>
+                        
+                        <!-- Payment Info -->
+                        <td class="text-center align-middle">
+                            {% if a.bill %}
+                                {{ a.bill.status }}
+                                <br>
+                                <small class="text-muted">{{ a.bill.paid_amount }} / {{ a.bill.total_amount }}</small>
+                            {% else %}
+                                <span class="badge bg-warning">No Bill</span>
+                            {% endif %}
+                        </td>
+
                         <td class="text-center align-middle">{{ a.status }}</td>
+
                         <td class="text-end align-middle">
-                            <a class="btn btn-primary btn-sm" href="">Add Invoice</a>
-                            <a class="btn btn-info btn-sm" href="{% url "patient_detail" a.patient.id %}">Details -></a>
+                            {% if a.bill %}
+                                <a class="btn btn-sm btn-secondary" href="#">View Bill</a>
+                            {% else %}
+                            <button type="button"
+                                    class="btn btn-sm btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#newInvoiceModal"
+                                    data-appointment-id="{{ a.id }}"
+                                    data-patient-name="{{ a.patient.first_name }} {{ a.patient.last_name }}"
+                                    data-patient-mr="{{ a.patient.mr_number }}">
+                                Add Invoice
+                            </button>
+                            {% endif %}
+                            <a class="btn btn-sm btn-info" href="{% url 'patient_detail' a.patient.id %}">Details →</a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
+
             </table>
         </div>
     </div>
@@ -93,63 +138,8 @@
 
 
 <!-- New Appointment Modal -->
-<div class="modal fade" id="newAppointmentModal" tabindex="-1" aria-labelledby="newAppointmentLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form method="POST" action="{% url 'create_appointment' %}">
-        {% csrf_token %}
-        <div class="modal-header">
-          <h5 class="modal-title" id="newAppointmentLabel">New Appointment</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="mb-3">
-                <label for="patient" class="form-label">Patient</label>
-                <select class="form-select" name="patient" id="patient" required>
-                    <option value="" selected disabled>Select patient</option>
-                    {% for patient in patients %}
-                        <option value="{{ patient.id }}">{{ patient.first_name }} {{ patient.last_name }} ({{ patient.mr_number }})</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="doctor" class="form-label">Doctor</label>
-                <select class="form-select" name="doctor" id="doctor" required>
-                    <option value="" selected disabled>Select doctor</option>
-                    {% for doctor in doctors %}
-                        <option value="{{ doctor.id }}">{{ doctor.first_name }} {{ doctor.last_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="date" class="form-label">Date</label>
-                <input type="date" class="form-control" name="date" id="date" value="{{ selected_date|date:'Y-m-d' }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="time" class="form-label">Time</label>
-                <input type="time" class="form-control" name="time" id="time">
-            </div>
-            <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select class="form-select" name="status" id="status" required>
-                    <option value="SCHEDULED" selected>Scheduled</option>
-                    <option value="COMPLETED">Completed</option>
-                    <option value="CANCELLED">Cancelled</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="notes" class="form-label">Notes</label>
-                <textarea class="form-control" name="notes" id="notes"></textarea>
-            </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Add Appointment</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+{% include "partials/appointment_modal.html" %}
+{% include "partials/invoice_modal.html" %}
 
 
 

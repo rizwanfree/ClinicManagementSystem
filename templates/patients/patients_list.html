@@ -21,9 +21,10 @@
             <th class="text-center">Actions</th>
         </tr>
     </thead>
+
     <tbody>
         {% for patient in patients %}
-        <tr>
+          <tr>
             <td class="text-center align-middle">{{ patient.mr_number }}</td>
             <td class="align-middle">{{ patient.first_name }} {{ patient.last_name }}</td>
             <td class="text-center align-middle">{{ patient.dob }}</td>
@@ -31,14 +32,48 @@
             <td class="text-center align-middle">{{ patient.get_gender_display }}</td>
             <td class="text-center align-middle">{{ patient.phone }}</td>
             <td class="align-middle">{{ patient.email }}</td>
-            <td class="text-end w-auto align-middle">
-                {% comment %} <a class="btn btn-info btn-sm" href="{% url 'patients_edit' patient.id %}">Edit</a>
-                <a class="btn btn-danger btn-sm" href="{% url 'patients_delete' patient.id %}">Delete</a> {% endcomment %}
-                <a class="btn btn-sm btn-outline-info" href="">PRESCRIPTION</a>
-                <a class="btn btn-sm btn-outline-success" href="">HEALTH RECORD</a>
-                <a class="" href="{% url "patient_detail" patient.id %}"><i class="bi bi-arrow-right"></i></a>
-            </td>
-        </tr>
+            
+            <td class="text-end align-middle">
+              <div class="d-flex justify-content-end align-items-center">
+                <!-- Appointment Button -->
+                <button class="btn btn-sm btn-success d-flex justify-content-center align-items-center me-2"
+                        style="width: 56px; height: 32px;"
+                        data-bs-toggle="modal"
+                        data-bs-target="#newAppointmentModal"
+                        data-patient-id="{{ patient.id }}"
+                        title="Book Appointment">
+                  <i class="bi bi-calendar-plus"></i>
+                </button>
+
+                <!-- Actions Dropdown -->
+                <div class="btn-group">
+                  <button id="btnGroupDrop{{ patient.id }}" 
+                          type="button" 
+                          class="btn btn-sm btn-outline-primary dropdown-toggle" 
+                          data-bs-toggle="dropdown" 
+                          aria-expanded="false">
+                    Actions
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btnGroupDrop{{ patient.id }}">
+                    <li>
+                      <a class="dropdown-item text-info" href="#">
+                        <i class="bi bi-file-medical me-2"></i> Prescription
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item text-success" href="#">
+                        <i class="bi bi-heart-pulse me-2"></i> Health Record
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item text-primary" href="{% url 'patient_detail' patient.id %}">
+                        <i class="bi bi-person-vcard me-2"></i> Patient Details
+                      </a>
+                    </li>
+                  </ul>
+                </div>       
+              </td>            
+          </tr>
         {% endfor %}
     </tbody>
 </table>
@@ -77,10 +112,10 @@ $(document).ready(function() {
             <label>DOB</label>
             <input type="date" name="dob" class="form-control" required>
           </div>
-          <div class="mb-2">
+          {% comment %} <div class="mb-2">
             <label>Age</label>
             <input type="number" name="age" class="form-control" required>
-          </div>
+          </div> {% endcomment %}
           <div class="mb-2">
             <label>Gender</label>
             <select name="gender" class="form-control" required>
@@ -108,4 +143,6 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
+
+{% include "partials/appointment_modal.html" %}
 {% endblock %}

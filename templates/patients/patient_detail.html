@@ -26,9 +26,9 @@
                     <a href="#" class="btn btn-outline-secondary btn-sm mb-2">
                         Past Visits: {{ past_appointments.count }}
                     </a><br>
-                    <a href="#" class="btn btn-primary btn-sm">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newAppointmentModal" data-patient-id="{{ patient.id }}" >
                         Book Appointment
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -219,4 +219,6 @@
 
     </div>
 </div>
+
+{% include "partials/appointment_modal.html" %}
 {% endblock %}

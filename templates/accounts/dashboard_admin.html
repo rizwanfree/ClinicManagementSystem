@@ -1,0 +1,52 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h3>Admin Dashboard</h3>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="card text-bg-primary shadow">
+      <div class="card-body">
+        <h5 class="card-title">Patients</h5>
+        <p class="fs-4">{{ patients_count }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card text-bg-success shadow">
+      <div class="card-body">
+        <h5 class="card-title">Doctors</h5>
+        <p class="fs-4">{{ doctors_count }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card text-bg-warning shadow">
+      <div class="card-body">
+        <h5 class="card-title">Revenue</h5>
+        <p class="fs-4">${{ revenue_total }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+<h5>Users by Role</h5>
+<ul>
+  {% for u in users_by_role %}
+    <li>{{ u.role }}: {{ u.count }}</li>
+  {% endfor %}
+</ul>
+
+<hr>
+<h5>Top Doctors</h5>
+<ol>
+  {% for d in top_doctors %}
+    <li>{{ d }} – {{ d.app_count }} appointments</li>
+  {% empty %}
+    <li>No doctors found.</li>
+  {% endfor %}
+</ol>
+{% endblock %}

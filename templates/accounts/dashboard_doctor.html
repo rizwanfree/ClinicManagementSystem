@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Doctor Dashboard</h3>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card text-bg-info shadow">
+      <div class="card-body">
+        <h5 class="card-title">My Patients</h5>
+        <p class="fs-4">{{ patients_count }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+<h5>My Appointments ({{ selected_date }})</h5>
+<table class="table table-sm table-hover">
+  <thead>
+    <tr>
+      <th>Time</th><th>Patient</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for a in appointments_today %}
+    <tr>
+      <td>{{ a.time }}</td>
+      <td>{{ a.patient }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="2">No appointments.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<hr>
+<h5>Upcoming Appointments</h5>
+<ul>
+  {% for a in appointments_upcoming %}
+    <li>{{ a.date }} – {{ a.patient }} at {{ a.time }}</li>
+  {% empty %}
+    <li>No upcoming appointments.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
+

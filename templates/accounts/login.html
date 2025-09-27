@@ -5,13 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - ClinicMS</title>
-    <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 </head>
 <body class="d-flex justify-content-center align-items-center vh-100 bg-light">
-
 <div class="card shadow-sm" style="width: 400px;">
-    <div class="card-body">
-        <h4 class="card-title text-center mb-4">Login</h4>
+    <div class="card-body text-center">
+
+        <!-- Logo -->
+        <img src="{% static 'images/logo.png' %}" 
+             alt="ClinicMS Logo" 
+             class="mb-1"
+             style="max-width: 120px; height: auto;">
+
+        {% comment %} <h4 class="card-title mb-4">Login</h4> {% endcomment %}
 
         {% if messages %}
           {% for message in messages %}
@@ -24,12 +30,12 @@
 
         <form method="post">
             {% csrf_token %}
-            <div class="mb-3">
+            <div class="mb-3 text-start">
                 <label class="form-label">Username</label>
                 <input type="text" name="username" class="form-control" required>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 text-start">
                 <label class="form-label">Password</label>
                 <input type="password" name="password" class="form-control" required>
             </div>

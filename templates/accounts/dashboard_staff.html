@@ -1,0 +1,46 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h3>Staff Dashboard</h3>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="card text-bg-primary shadow">
+      <div class="card-body">
+        <h5 class="card-title">Patients</h5>
+        <p class="fs-4">{{ patients_count }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card text-bg-success shadow">
+      <div class="card-body">
+        <h5 class="card-title">Appointments Today</h5>
+        <p class="fs-4">{{ appointments_count_today }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+<h5>Appointments ({{ selected_date }})</h5>
+<table class="table table-sm table-hover">
+  <thead>
+    <tr>
+      <th>Time</th><th>Patient</th><th>Doctor</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for a in appointments %}
+    <tr>
+      <td>{{ a.time }}</td>
+      <td>{{ a.patient }}</td>
+      <td>{{ a.doctor }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No appointments.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

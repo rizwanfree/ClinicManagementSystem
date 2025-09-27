@@ -5,12 +5,14 @@ from django.contrib import messages
 
 from appointments.models import Appointment
 from billing.models import Bill
+from doctors.models import Doctor
 from records.models import MedicalRecord, Prescription
 from .models import Patient
 
 @login_required
 def patients_list(request):
     patients = Patient.objects.all()
+    
     return render(request, "patients/patients_list.html", {"patients": patients})
 
 @login_required
@@ -20,7 +22,6 @@ def patients_create(request):
             first_name=request.POST.get("first_name"),
             last_name=request.POST.get("last_name"),
             dob=request.POST.get("dob"),
-            age=request.POST.get("age"),
             gender=request.POST.get("gender"),
             phone=request.POST.get("phone"),
             email=request.POST.get("email"),
@@ -55,12 +56,15 @@ def patient_detail(request, pk):
     health_records = MedicalRecord.objects.filter(patient=patient).order_by("-visit_date")
 
     context = {
+        "patients": Patient.objects.all(),
+        "doctors": Doctor.objects.all(),
         "patient": patient,
         "upcoming_appointments": upcoming_appointments,
         "past_appointments": past_appointments,
         "prescriptions": prescriptions,
         "invoices": invoices,
         "health_records": health_records,
+        "selected_patient": patient,   # 👈 preselect this one
 
         # history grouped
         "diagnosis_history": patient.history_items.filter(category="CURRENT_DIAGNOSIS"),
