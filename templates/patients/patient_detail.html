@@ -5,116 +5,143 @@
     <!-- LEFT SIDE (60%) -->
     <div class="col-md-6">
         
-<!-- Patient Info Card -->
-<div class="card mb-3 shadow">
-    <div class="card-body">
-        <div class="d-flex justify-content-between align-items-start">
-            <!-- Left side: patient info -->
-            <div>
-                <h4>
-                    {{ patient.first_name }} {{ patient.last_name }} 
-                    <small class="text-muted">(MR# {{ patient.mr_number }})</small>
-                </h4>
-                <p><strong>Gender:</strong> {{ patient.get_gender_display }}</p>
-                <p><strong>DOB:</strong> {{ patient.dob }} ({{ patient.age }} yrs)</p>
-                <p><strong>Phone:</strong> {{ patient.phone }}</p>
-                <p><strong>Address:</strong> {{ patient.address }}</p>
-            </div>
+    <!-- Patient Info Card -->
+    <div class="card mb-3 shadow">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+                <!-- Left side: patient info -->
+                <div>
+                    <h4>
+                        {{ patient.first_name }} {{ patient.last_name }} 
+                        <small class="text-muted">(MR# {{ patient.mr_number }})</small>
+                    </h4>
+                    <p><strong>Gender:</strong> {{ patient.get_gender_display }}</p>
+                    <p><strong>DOB:</strong> {{ patient.dob }} ({{ patient.age }} yrs)</p>
+                    <p><strong>Phone:</strong> {{ patient.phone }}</p>
+                    <p><strong>Address:</strong> {{ patient.address }}</p>
+                </div>
 
-            <!-- Right side: action buttons -->
-            <div class="text-end">
-                <a href="#" class="btn btn-outline-secondary btn-sm mb-2">
-                    Past Visits: {{ past_appointments.count }}
-                </a><br>
-                <a href="#" class="btn btn-primary btn-sm">
-                    Book Appointment
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-        <!-- Tabs Card -->
-        <div class="card shadow">
-            <div class="card-body">
-                <ul class="nav nav-tabs" id="patientTabs" role="tablist">
-                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#upcoming">Upcoming</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#past">Past</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#prescriptions">Prescriptions</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#invoices">Invoices</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#health">Health Records</a></li>
-                </ul>
-
-                <div class="tab-content mt-3">
-                    <!-- Upcoming -->
-                    <div class="tab-pane fade show active" id="upcoming">
-                        <table class="table table-sm table-striped">
-                            <thead><tr><th>Date</th><th>Doctor</th><th>Status</th></tr></thead>
-                            <tbody>
-                                {% for appt in upcoming_appointments %}
-                                    <tr><td>{{ appt.date }} {{ appt.time }}</td><td>{{ appt.doctor }}</td><td>{{ appt.status }}</td></tr>
-                                {% empty %}
-                                    <tr><td colspan="3">No upcoming appointments</td></tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Past -->
-                    <div class="tab-pane fade" id="past">
-                        <table class="table table-sm table-striped">
-                            <thead><tr><th>Date</th><th>Doctor</th><th>Status</th></tr></thead>
-                            <tbody>
-                                {% for appt in past_appointments %}
-                                    <tr><td>{{ appt.date }} {{ appt.time }}</td><td>{{ appt.doctor }}</td><td>{{ appt.status }}</td></tr>
-                                {% empty %}
-                                    <tr><td colspan="3">No past appointments</td></tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Prescriptions -->
-                    <div class="tab-pane fade" id="prescriptions">
-                        <table class="table table-sm table-striped">
-                            <thead><tr><th>Date</th><th>Doctor</th><th>Notes</th></tr></thead>
-                            <tbody>
-                                {% for p in prescriptions %}
-                                    <tr><td>{{ p.date }}</td><td>{{ p.doctor }}</td><td>{{ p.notes }}</td></tr>
-                                {% empty %}
-                                    <tr><td colspan="3">No prescriptions</td></tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Invoices -->
-                    <div class="tab-pane fade" id="invoices">
-                        <table class="table table-sm table-striped">
-                            <thead><tr><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
-                            <tbody>
-                                {% for i in invoices %}
-                                    <tr><td>{{ i.date }}</td><td>{{ i.amount }}</td><td>{{ i.status }}</td></tr>
-                                {% empty %}
-                                    <tr><td colspan="3">No invoices</td></tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Health -->
-                    <div class="tab-pane fade" id="health">
-                        <table class="table table-sm table-striped">
-                            <thead><tr><th>Date</th><th>Details</th></tr></thead>
-                            <tbody>
-                                {% for h in health_records %}
-                                    <tr><td>{{ h.date }}</td><td>{{ h.details }}</td></tr>
-                                {% empty %}
-                                    <tr><td colspan="2">No health records</td></tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                <!-- Right side: action buttons -->
+                <div class="text-end">
+                    <a href="#" class="btn btn-outline-secondary btn-sm mb-2">
+                        Past Visits: {{ past_appointments.count }}
+                    </a><br>
+                    <a href="#" class="btn btn-primary btn-sm">
+                        Book Appointment
+                    </a>
                 </div>
             </div>
         </div>
+    </div>
 
+    <!-- Tabs Card -->
+    <div class="card shadow">
+        <div class="card-body">
+            <ul class="nav nav-tabs" id="patientTabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#upcoming">Upcoming</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#past">Past</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#prescriptions">Prescriptions</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#invoices">Invoices</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#health">Health Records</a></li>
+            </ul>
+
+            <div class="tab-content mt-3">
+                <!-- Upcoming -->
+                <div class="tab-pane fade show active" id="upcoming">
+                    <table class="table table-sm table-striped">
+                        <thead><tr><th>Date</th><th>Doctor</th><th>Status</th></tr></thead>
+                        <tbody>
+                            {% for appt in upcoming_appointments %}
+                                <tr>
+                                    <td>{{ appt.date }} {{ appt.time }}</td>
+                                    <td>{{ appt.doctor }}</td>
+                                    <td>{{ appt.get_status_display }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr><td colspan="3">No upcoming appointments</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Past -->
+                <div class="tab-pane fade" id="past">
+                    <table class="table table-sm table-striped">
+                        <thead><tr><th>Date</th><th>Doctor</th><th>Status</th></tr></thead>
+                        <tbody>
+                            {% for appt in past_appointments %}
+                                <tr>
+                                    <td>{{ appt.date }} {{ appt.time }}</td>
+                                    <td>{{ appt.doctor }}</td>
+                                    <td>{{ appt.get_status_display }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr><td colspan="3">No past appointments</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Prescriptions -->
+                <div class="tab-pane fade" id="prescriptions">
+                    <table class="table table-sm table-striped">
+                        <thead><tr><th>Date</th><th>Doctor</th><th>Medication</th><th>Dosage</th><th>Duration</th></tr></thead>
+                        <tbody>
+                            {% for p in prescriptions %}
+                                <tr>
+                                    <td>{{ p.record.visit_date }}</td>
+                                    <td>{{ p.record.doctor }}</td>
+                                    <td>{{ p.medication_name }}</td>
+                                    <td>{{ p.dosage }}</td>
+                                    <td>{{ p.duration }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr><td colspan="5">No prescriptions</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Invoices -->
+                <div class="tab-pane fade" id="invoices">
+                    <table class="table table-sm table-striped">
+                        <thead><tr><th>Date</th><th>Total</th><th>Paid</th><th>Status</th></tr></thead>
+                        <tbody>
+                            {% for i in invoices %}
+                                <tr>
+                                    <td>{{ i.created_at|date:"Y-m-d" }}</td>
+                                    <td>{{ i.total_amount }}</td>
+                                    <td>{{ i.paid_amount }}</td>
+                                    <td>{{ i.get_status_display }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr><td colspan="4">No invoices</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Health Records -->
+                <div class="tab-pane fade" id="health">
+                    <table class="table table-sm table-striped">
+                        <thead><tr><th>Date</th><th>Doctor</th><th>Diagnosis</th><th>Treatment</th></tr></thead>
+                        <tbody>
+                            {% for h in health_records %}
+                                <tr>
+                                    <td>{{ h.visit_date }}</td>
+                                    <td>{{ h.doctor }}</td>
+                                    <td>{{ h.diagnosis }}</td>
+                                    <td>{{ h.treatment }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr><td colspan="4">No health records</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <!-- RIGHT SIDE (40%) -->
@@ -124,10 +151,18 @@
         <div class="card mb-3 shadow">
             <div class="card-body">
                 <h5>Patient Vitals</h5>
-                <p><strong>Height:</strong> --</p>
-                <p><strong>Weight:</strong> --</p>
-                <p><strong>BP:</strong> --</p>
-                <p><strong>Pulse:</strong> --</p>
+                {% if patient.vitals.all %}
+                    {% with latest=patient.vitals.first %}
+                        <p><strong>Height:</strong> {{ latest.height_cm }} cm</p>
+                        <p><strong>Weight:</strong> {{ latest.weight_kg }} kg</p>
+                        <p><strong>BP:</strong> {{ latest.bp }}</p>
+                        <p><strong>Pulse:</strong> {{ latest.pulse }}</p>
+                        <p><strong>Temperature:</strong> {{ latest.temperature_c }} °C</p>
+                        <p><small>Recorded at: {{ latest.recorded_at }}</small></p>
+                    {% endwith %}
+                {% else %}
+                    <p>No vitals recorded</p>
+                {% endif %}
             </div>
         </div>
 
@@ -144,19 +179,39 @@
 
                 <div class="tab-content mt-3">
                     <div class="tab-pane fade show active" id="diagnose">
-                        <p>No data</p>
+                        {% for item in patient.history_items.all %}
+                            {% if item.category == "CURRENT_DIAGNOSIS" %}
+                                <p>{{ item.description }} ({{ item.noted_at }})</p>
+                            {% endif %}
+                        {% empty %}<p>No data</p>{% endfor %}
                     </div>
                     <div class="tab-pane fade" id="pastHistory">
-                        <p>No data</p>
+                        {% for item in patient.history_items.all %}
+                            {% if item.category == "PAST_MEDICAL" %}
+                                <p>{{ item.description }} ({{ item.noted_at }})</p>
+                            {% endif %}
+                        {% empty %}<p>No data</p>{% endfor %}
                     </div>
                     <div class="tab-pane fade" id="family">
-                        <p>No data</p>
+                        {% for item in patient.history_items.all %}
+                            {% if item.category == "FAMILY" %}
+                                <p>{{ item.description }} ({{ item.noted_at }})</p>
+                            {% endif %}
+                        {% empty %}<p>No data</p>{% endfor %}
                     </div>
                     <div class="tab-pane fade" id="surgical">
-                        <p>No data</p>
+                        {% for item in patient.history_items.all %}
+                            {% if item.category == "SURGICAL" %}
+                                <p>{{ item.description }} ({{ item.noted_at }})</p>
+                            {% endif %}
+                        {% empty %}<p>No data</p>{% endfor %}
                     </div>
                     <div class="tab-pane fade" id="allergies">
-                        <p>No data</p>
+                        {% for item in patient.history_items.all %}
+                            {% if item.category == "ALLERGIES" %}
+                                <p>{{ item.description }} ({{ item.noted_at }})</p>
+                            {% endif %}
+                        {% empty %}<p>No data</p>{% endfor %}
                     </div>
                 </div>
             </div>
